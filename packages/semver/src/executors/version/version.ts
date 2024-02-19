@@ -39,6 +39,7 @@ export interface CommonVersionOptions {
   dependencyUpdates: Version[];
   preset: PresetOpt;
   workspace: ProjectsConfigurations | undefined;
+  changelogFilename?: string;
 }
 
 export function versionWorkspace({
@@ -51,6 +52,7 @@ export function versionWorkspace({
   tag,
   skipCommit,
   projectRoot,
+  changelogFilename,
   ...options
 }: {
   skipRootChangelog: boolean;
@@ -71,6 +73,7 @@ export function versionWorkspace({
       projectName,
       skipCommit,
       tag,
+      changelogFilename,
       ...options,
     }),
 
@@ -125,6 +128,7 @@ export function versionProject({
   projectName,
   skipCommit,
   tag,
+  changelogFilename,
   ...options
 }: {
   projectRoot: string;
@@ -141,6 +145,7 @@ export function versionProject({
     noVerify,
     tagPrefix,
     tag,
+    changelogFilename,
     ...options,
   }).pipe(
     concatMap((changelogPaths) =>
@@ -204,6 +209,7 @@ export function _generateChangelogs({
   skipRootChangelog,
   skipProjectChangelog,
   projectName,
+  changelogFilename,
   ...options
 }: CommonVersionOptions & {
   skipRootChangelog: boolean;
@@ -225,11 +231,12 @@ export function _generateChangelogs({
     changelogRoots.map((projectRoot) =>
       updateChangelog({
         projectRoot,
+        changelogFilename,
         ...options,
       }).pipe(
         logStep({
           step: 'changelog_success',
-          message: `Generated CHANGELOG.md.`,
+          message: `Generated ${changelogFilename} file.`,
           projectName,
         }),
       ),

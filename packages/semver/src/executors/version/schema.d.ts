@@ -36,6 +36,7 @@ export interface VersionBuilderSchema {
   commitMessageFormat?: string;
   preset: PresetOpt | 'conventional'; // @TODO: Remove 'conventional' in the next major release.
   commitParserOptions?: CommitParserOptions;
+  changelogFilename?: string;
 }
 
 export interface WriteChangelogConfig {

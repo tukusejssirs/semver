@@ -32,7 +32,7 @@ export function updateProjects(
       const targets = project.targets ?? {};
       targets.version = createTarget(options);
       updateProjectConfiguration(tree, projectName, project);
-      createChangelog(tree, project.root);
+      createChangelog(tree, project.root, options.changelogFilename);
     }
   });
 }

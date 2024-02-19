@@ -1,5 +1,5 @@
 import * as gitRawCommits from 'git-raw-commits';
-import { EMPTY, Observable, throwError } from 'rxjs';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, last, map, scan, startWith } from 'rxjs/operators';
 import { exec } from '../../common/exec';
 import { logStep, _logStep } from './logger';
@@ -136,8 +136,13 @@ export function addToStage({
     return EMPTY;
   }
 
-  const gitAddOptions = [...(dryRun ? ['--dry-run'] : []), ...paths];
-  return exec('git', ['add', ...gitAddOptions]).pipe(map(() => undefined));
+  // No need to add files when in dry-run mode, as those files might not exist
+  if (!dryRun) {
+    const gitAddOptions = [...paths];
+    return exec('git', ['add', ...gitAddOptions]).pipe(map(() => undefined));
+  }
+
+  return of();
 }
 
 export function getFirstCommitRef(): Observable<string> {

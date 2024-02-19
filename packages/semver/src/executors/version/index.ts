@@ -49,6 +49,7 @@ export default async function version(
     skipCommitTypes,
     skipCommit,
     commitParserOptions,
+    changelogFilename,
   } = _normalizeOptions(options);
 
   const workspaceRoot = context.root;
@@ -136,6 +137,7 @@ export default async function version(
         dependencyUpdates,
         skipCommit,
         workspace: context.projectsConfigurations,
+        changelogFilename,
       };
 
       const version$ = defer(() =>
@@ -144,10 +146,12 @@ export default async function version(
               ...options,
               projectRoot,
               skipRootChangelog,
+              changelogFilename,
             })
           : versionProject({
               ...options,
               projectRoot,
+              changelogFilename,
             }),
       );
 
@@ -183,6 +187,7 @@ export default async function version(
 
       const changelogPath = getChangelogPath(
         syncVersions ? workspaceRoot : projectRoot,
+        changelogFilename,
       );
 
       return version$.pipe(

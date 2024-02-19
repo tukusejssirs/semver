@@ -8,4 +8,5 @@ export interface SchemaOptions {
   skipInstall: boolean;
   commitMessageFormat?: string;
   preset: Preset;
+  changelogFilename?: string;
 }

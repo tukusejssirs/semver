@@ -21,8 +21,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 `;
 
 /* istanbul ignore next */
-export function getChangelogPath(projectRoot: string) {
-  return resolve(projectRoot, 'CHANGELOG.md');
+export function getChangelogPath(
+  projectRoot: string,
+  changelogFilename?: string,
+) {
+  return resolve(projectRoot, changelogFilename || 'CHANGELOG.md');
 }
 
 /* istanbul ignore next */
@@ -33,6 +36,7 @@ export function updateChangelog({
   newVersion,
   changelogHeader,
   tagPrefix,
+  changelogFilename,
 }: {
   projectRoot: string;
   dryRun: boolean;
@@ -40,9 +44,10 @@ export function updateChangelog({
   newVersion: string;
   tagPrefix: string;
   changelogHeader: string;
+  changelogFilename?: string;
 }): Observable<string> {
   return defer(async () => {
-    const changelogPath = getChangelogPath(projectRoot);
+    const changelogPath = getChangelogPath(projectRoot, changelogFilename);
     await writeChangelog(
       {
         changelogHeader,
